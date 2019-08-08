@@ -111,6 +111,10 @@ func (o *Outbound) Close() error {
 	return nil
 }
 
+func (o *Outbound) DispatchLog() bool {
+	return false
+}
+
 type StaticMuxPicker struct {
 	access  sync.Mutex
 	workers []*PortalWorker

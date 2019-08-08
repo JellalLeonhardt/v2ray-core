@@ -54,4 +54,6 @@ message OutboundHandlerConfig {
   int64 expire = 4;
   // Comment of this outbound handler. Not used for now.
   string comment = 5;
+
+  bool dispatch_log = 6;
 }

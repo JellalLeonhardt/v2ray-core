@@ -2,8 +2,9 @@ package core
 
 import (
 	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
 	math "math"
+
+	proto "github.com/golang/protobuf/proto"
 	serial "v2ray.com/core/common/serial"
 	transport "v2ray.com/core/transport"
 )
@@ -171,6 +172,7 @@ type OutboundHandlerConfig struct {
 	Expire int64 `protobuf:"varint,4,opt,name=expire,proto3" json:"expire,omitempty"`
 	// Comment of this outbound handler. Not used for now.
 	Comment              string   `protobuf:"bytes,5,opt,name=comment,proto3" json:"comment,omitempty"`
+	DispatchLog          bool     `json:"dispatchLog"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`

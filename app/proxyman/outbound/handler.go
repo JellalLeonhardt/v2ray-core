@@ -19,6 +19,7 @@ import (
 // Handler is an implements of outbound.Handler.
 type Handler struct {
 	tag             string
+	dispatchLog     bool
 	senderSettings  *proxyman.SenderConfig
 	streamSettings  *internet.MemoryStreamConfig
 	proxy           proxy.Outbound
@@ -172,4 +173,8 @@ func (h *Handler) Start() error {
 func (h *Handler) Close() error {
 	common.Close(h.mux)
 	return nil
+}
+
+func (h *Handler) DispatchLog() bool {
+	return h.dispatchLog
 }

@@ -108,3 +108,7 @@ func (co *Outbound) Close() error {
 	co.closed = true
 	return co.listener.Close()
 }
+
+func (co *Outbound) DispatchLog() bool {
+	return false
+}

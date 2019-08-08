@@ -13,6 +13,7 @@ import (
 	"v2ray.com/core"
 	"v2ray.com/core/common"
 	"v2ray.com/core/common/buf"
+	"v2ray.com/core/common/log"
 	"v2ray.com/core/common/net"
 	"v2ray.com/core/common/protocol"
 	"v2ray.com/core/common/session"
@@ -257,11 +258,13 @@ func sniffer(ctx context.Context, cReader *cachedReader) (SniffResult, error) {
 
 func (d *DefaultDispatcher) routedDispatch(ctx context.Context, link *transport.Link, destination net.Destination) {
 	var handler outbound.Handler
+	var handlerTag string
 	if d.router != nil {
 		if tag, err := d.router.PickRoute(ctx); err == nil {
 			if h := d.ohm.GetHandler(tag); h != nil {
 				newError("taking detour [", tag, "] for [", destination, "]").WriteToLog(session.ExportIDToError(ctx))
 				handler = h
+				handlerTag = tag
 			} else {
 				newError("non existing tag: ", tag).AtWarning().WriteToLog(session.ExportIDToError(ctx))
 			}
@@ -279,6 +282,14 @@ func (d *DefaultDispatcher) routedDispatch(ctx context.Context, link *transport.
 		common.Close(link.Writer)
 		common.Interrupt(link.Reader)
 		return
+	}
+
+	if handler.DispatchLog() {
+		msg := &log.ProxyMessage{
+			To:          destination.Address.String(),
+			OutboundTag: handlerTag,
+		}
+		log.Record(msg)
 	}
 
 	handler.Dispatch(ctx, link)

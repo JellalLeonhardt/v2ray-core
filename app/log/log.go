@@ -108,6 +108,10 @@ func (g *Instance) Handle(msg log.Message) {
 		if g.errorLogger != nil && msg.Severity <= g.config.ErrorLogLevel {
 			g.errorLogger.Handle(msg)
 		}
+	case *log.ProxyMessage:
+		if g.accessLogger != nil {
+			g.accessLogger.Handle(msg)
+		}
 	default:
 		// Swallow
 	}

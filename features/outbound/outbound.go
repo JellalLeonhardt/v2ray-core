@@ -15,6 +15,7 @@ type Handler interface {
 	common.Runnable
 	Tag() string
 	Dispatch(ctx context.Context, link *transport.Link)
+	DispatchLog() bool
 }
 
 type HandlerSelector interface {

@@ -216,6 +216,7 @@ type OutboundDetourConfig struct {
 	StreamSetting *StreamConfig    `json:"streamSettings"`
 	ProxySettings *ProxyConfig     `json:"proxySettings"`
 	MuxSettings   *MuxConfig       `json:"mux"`
+	DispatchLog   bool             `json:dispatchLog`
 }
 
 // Build implements Buildable.
@@ -270,6 +271,7 @@ func (c *OutboundDetourConfig) Build() (*core.OutboundHandlerConfig, error) {
 		SenderSettings: serial.ToTypedMessage(senderSettings),
 		Tag:            c.Tag,
 		ProxySettings:  serial.ToTypedMessage(ts),
+		DispatchLog:    c.DispatchLog,
 	}, nil
 }
 
